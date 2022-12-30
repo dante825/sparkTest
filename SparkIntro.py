@@ -1,16 +1,19 @@
-import findspark
+# import findspark
 import time
 from pyspark import SparkContext, SparkConf
 from pyspark.sql import SparkSession
 
 # findspark.init()
 
-sc = SparkContext()
+# sc = SparkContext()
 spark = SparkSession \
     .builder \
     .appName("Python Spark Data Frames basic example") \
     .config("spark.some.config.option", "some_value") \
     .getOrCreate()
+
+sc = spark.sparkContext
+sc.setLogLevel('ERROR')
 
 # Creating RDDs
 data = range(1, 30)

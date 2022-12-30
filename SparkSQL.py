@@ -3,14 +3,16 @@ from pyspark import SparkContext, SparkConf
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import pandas_udf, PandasUDFType
 
-# Create a spark context class
-sc = SparkContext()
-
 # Create a spark session
 spark = SparkSession.builder \
-    .appName("Python Spark DataFrames basic example") \
-    .config("spark.some.config.option", "some_value") \
+    .appName("Spark sql") \
+    .config("spark.executor.cores", "2") \
+    .config("spark.driver.memory", "2g")\
+    .config("spark.sql.shuffle.partitions", "2")\
     .getOrCreate()
+
+sc = spark.sparkContext
+sc.setLogLevel('ERROR')
 
 mtcars = pd.read_csv(
     'https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBM-BD0225EN-SkillsNetwork/labs/data/mtcars.csv')
