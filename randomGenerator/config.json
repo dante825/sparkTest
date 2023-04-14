@@ -1,0 +1,9 @@
+{
+    "production": {
+        "host": "localhost",
+        "port": 5432,
+        "database": "postgres",
+        "username": "a2FuZ3dlaQ==",
+        "password": ""
+    }
+}
