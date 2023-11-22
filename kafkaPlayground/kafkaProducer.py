@@ -2,8 +2,21 @@ from kafka import KafkaProducer
 from kafka.errors import KafkaError
 import json
 import msgpack
+import logging.handlers
 
-producer = KafkaProducer(bootstrap_servers=['broker1:1234'])
+LOG_FILENAME = "../logs/kafkaProducer.log"
+
+my_logger = logging.getLogger("kafka_producer_logger")
+my_logger.setLevel(logging.INFO)
+
+handler = logging.handlers.RotatingFileHandler(LOG_FILENAME, maxBytes=104857600, backupCount=10)
+bf = logging.Formatter('{asctime} {name} {levelname:8s} {message}', style='{')
+
+handler.setFormatter(bf)
+my_logger.addHandler(handler)
+
+
+producer = KafkaProducer(bootstrap_servers=['localhost:9092'])
 
 # Asynchronous by default
 future = producer.send('my-topic', b'raw_bytes')
@@ -13,7 +26,7 @@ try:
     record_metadata = future.get(timeout=10)
 except KafkaError:
     # Decide what to do if produce request failed...
-    log.exception()
+    my_logger.exception()
     pass
 
 # Successful result returns assigned partition and offset
@@ -42,7 +55,7 @@ def on_send_success(record_metadata):
     print(record_metadata.offset)
 
 def on_send_error(excp):
-    log.error('I am an errback', exc_info=excp)
+    my_logger.error('I am an errback', exc_info=excp)
     # handle exception
 
 # produce asynchronously with callbacks
