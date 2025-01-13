@@ -39,8 +39,8 @@ def main():
     db_op = DbOperation()
 
     # To generate random customers
-    # rand_str_list = generate_random_str_list(1000000)
-    # db_op.insert_cust_text(rand_str_list)
+    rand_str_list = generate_random_str_list(1000000)
+    db_op.insert_cust_text(rand_str_list)
 
     # To generate random transactions
     cust_id_list = db_op.generic_execute_return("select cust_id from customer_info")
